@@ -60,7 +60,7 @@ features = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
 scaled_features = scaler.transform(features)
 
 st.title("Predict flower species using various Machine Learning models")
-st.image("all.png")
+st.image("assets/all.png")
 st.text("<- Use the sidebar to specify your flower's features")
 col1, col2, col3 = st.columns(3)
 with col1.container(border=True, height=200):
@@ -80,11 +80,11 @@ if rf_but:
     prediction = model1.predict(scaled_features)
     st.header(f"Random Forest Prediction: {prediction[0]}")
     if prediction[0]=="Iris-setosa":
-        st.image("setosa.jpg")
+        st.image("assets/setosa.jpg")
     if prediction[0]=="Iris-versicolor":
-        st.image("Iris_versicolor_3.jpg")
+        st.image("assets/Iris_versicolor_3.jpg")
     if prediction[0]=="Iris-virginica":
-        st.image("iris_virginica.jpg")
+        st.image("assests/iris_virginica.jpg")
     
     st.text("Random Forest Feature Importance")
     plot_feature_importance(model1, df.columns[0:4])
@@ -94,12 +94,11 @@ if dt_but:
     prediction = model3.predict(scaled_features)
     st.header(f"Decision Tree Prediction: {prediction[0]}")
     if prediction[0]=="Iris-setosa":
-        st.image("setosa.jpg")
+        st.image("assets/setosa.jpg")
     if prediction[0]=="Iris-versicolor":
-        st.image("Iris_versicolor_3.jpg")
+        st.image("assets/Iris_versicolor_3.jpg")
     if prediction[0]=="Iris-virginica":
-        st.image("iris_virginica.jpg")
-    st.text("Decision Tree Feature Importance")
+        st.image("assests/iris_virginica.jpg")
     plot_feature_importance(model3, df.columns[0:4])
 if gb_but:
     model2= GradientBoostingClassifier(n_estimators=100, random_state=42)
@@ -107,11 +106,11 @@ if gb_but:
     prediction = model2.predict(scaled_features)
     st.header(f"Gradient Boosting Prediction: {prediction[0]}")
     if prediction[0]=="Iris-setosa":
-        st.image("setosa.jpg")
+        st.image("assets/setosa.jpg")
     if prediction[0]=="Iris-versicolor":
-        st.image("Iris_versicolor_3.jpg")
+        st.image("assets/Iris_versicolor_3.jpg")
     if prediction[0]=="Iris-virginica":
-        st.image("iris_virginica.jpg")
+        st.image("assests/iris_virginica.jpg")
     st.text("Gradient Boosting Feature Importance")
     plot_feature_importance(model2, df.columns[0:4])
     
