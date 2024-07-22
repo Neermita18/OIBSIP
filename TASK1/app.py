@@ -46,7 +46,7 @@ def plot_feature_importance(model, feature_names):
     fig = px.bar(df, x='Feature', y='Importance', title= model.__class__.__name__)
     st.plotly_chart(fig)
 
-st.cache_data.clear()
+st.cache()
 
 st.sidebar.header("Input flower features")
 sepal_length = st.sidebar.slider("Sepal Length", min_value=4.0, max_value=8.0, value=5.0, step=0.1)
