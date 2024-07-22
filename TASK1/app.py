@@ -14,12 +14,12 @@ import seaborn as sns
 import pickle as pkl
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
+st.cache()
 df= pd.read_csv("https://raw.githubusercontent.com/amankharwal/Website-data/master/IRIS.csv?raw=True")
-print(df)
-print(df.describe())
+
 
 X= df.iloc[:,0:4]
-print(X)
+
 y = df['species'] 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -46,7 +46,7 @@ def plot_feature_importance(model, feature_names):
     fig = px.bar(df, x='Feature', y='Importance', title= model.__class__.__name__)
     st.plotly_chart(fig)
 
-st.cache()
+
 
 st.sidebar.header("Input flower features")
 sepal_length = st.sidebar.slider("Sepal Length", min_value=4.0, max_value=8.0, value=5.0, step=0.1)
