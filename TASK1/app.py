@@ -4,15 +4,40 @@ import pandas as pd
 import pickle
 from sklearn.preprocessing import StandardScaler
 import plotly.express as px
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pickle as pkl
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.tree import DecisionTreeClassifier
+df= pd.read_csv("https://raw.githubusercontent.com/amankharwal/Website-data/master/IRIS.csv?raw=True")
+print(df)
+print(df.describe())
+
+X= df.iloc[:,0:4]
+print(X)
+y = df['species'] 
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+# with open('scaler.pkl', 'wb') as file:
+#     pkl.dump(scaler, file)
+
+
+
+
+
+
 
 df= pd.read_csv("https://raw.githubusercontent.com/amankharwal/Website-data/master/IRIS.csv?raw=True")
 
-with open('random_forest_model.pkl', 'rb') as file:
-    rf_model = pickle.load(file)
-with open('decision_tree.pkl', 'rb') as file:
-    dt_model = pickle.load(file)
-with open('gradient_boost.pkl', 'rb') as file:
-    gb_model = pickle.load(file)
+
     
 # Create interactive feature importance plot
 def plot_feature_importance(model, feature_names):
@@ -30,8 +55,7 @@ petal_length = st.sidebar.slider("Petal Length", min_value=1.0, max_value=7.0, v
 petal_width = st.sidebar.slider("Petal Width", min_value=0.1, max_value=2.5, value=1.2, step=0.1)
 
 features = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
-with open('scaler.pkl', 'rb') as file:
-    scaler = pickle.load(file)
+
 
 scaled_features = scaler.transform(features)
 
@@ -51,7 +75,9 @@ with col3.container(border=True, height=200):
     gb_but=st.button("Use Gradient Boosting to predict", key="gb")
     
 if rf_but:
-    prediction = rf_model.predict(scaled_features)
+    model1 = RandomForestClassifier(n_estimators=100, random_state=42)
+    model1.fit(X_train, y_train)
+    prediction = model1.predict(scaled_features)
     st.header(f"Random Forest Prediction: {prediction[0]}")
     if prediction[0]=="Iris-setosa":
         st.image("setosa.jpg")
@@ -61,9 +87,11 @@ if rf_but:
         st.image("iris_virginica.jpg")
     
     st.text("Random Forest Feature Importance")
-    plot_feature_importance(rf_model, df.columns[0:4])
+    plot_feature_importance(model1, df.columns[0:4])
 if dt_but:
-    prediction = dt_model.predict(scaled_features)
+    model3= DecisionTreeClassifier(criterion="entropy", max_depth=8, min_samples_leaf=1, random_state=42)
+    model3.fit(X_train, y_train)
+    prediction = model3.predict(scaled_features)
     st.header(f"Decision Tree Prediction: {prediction[0]}")
     if prediction[0]=="Iris-setosa":
         st.image("setosa.jpg")
@@ -72,9 +100,11 @@ if dt_but:
     if prediction[0]=="Iris-virginica":
         st.image("iris_virginica.jpg")
     st.text("Decision Tree Feature Importance")
-    plot_feature_importance(dt_model, df.columns[0:4])
+    plot_feature_importance(model3, df.columns[0:4])
 if gb_but:
-    prediction = gb_model.predict(scaled_features)
+    model2= GradientBoostingClassifier(n_estimators=100, random_state=42)
+    model2.fit(X_train, y_train)
+    prediction = model2.predict(scaled_features)
     st.header(f"Gradient Boosting Prediction: {prediction[0]}")
     if prediction[0]=="Iris-setosa":
         st.image("setosa.jpg")
@@ -83,7 +113,7 @@ if gb_but:
     if prediction[0]=="Iris-virginica":
         st.image("iris_virginica.jpg")
     st.text("Gradient Boosting Feature Importance")
-    plot_feature_importance(gb_model, df.columns[0:4])
+    plot_feature_importance(model2, df.columns[0:4])
     
     
 
